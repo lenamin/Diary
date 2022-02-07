@@ -16,7 +16,7 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="q6Y-AG-B99">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="selectedImageTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
                         <segue destination="JaY-Qz-J4Y" kind="relationship" relationship="viewControllers" id="oLL-pG-cKu"/>
@@ -27,11 +27,17 @@
             </objects>
             <point key="canvasLocation" x="-1451" y="-358"/>
         </scene>
-        <!--Diary-->
+        <!--Navigation Controller-->
         <scene sceneID="Sdt-mL-FOY">
             <objects>
                 <navigationController id="JaY-Qz-J4Y" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Diary" image="pencil" catalog="system" selectedImage="pencil.circle.fill" id="9GW-BG-qAs"/>
+                    <tabBarItem key="tabBarItem" title="" image="pencil_empty_5050" selectedImage="pencil_5050" id="9GW-BG-qAs" colorLabel="IBBuiltInLabel-Gray">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </tabBarItem>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="wKF-MJ-okp">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -54,7 +60,7 @@
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="TYz-fD-MBu">
                                 <rect key="frame" x="0.0" y="88" width="414" height="725"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" red="0.96144119419999996" green="0.81072332229999999" blue="0.74515711669999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="DbX-uH-URw">
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -102,7 +108,7 @@
                             </collectionView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.96144119419999996" green="0.81072332229999999" blue="0.74515711669999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="TYz-fD-MBu" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="SIP-A3-w9z"/>
                             <constraint firstItem="TYz-fD-MBu" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Ve6-DR-gBE"/>
@@ -141,6 +147,7 @@
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UWG-hJ-kuh">
                                 <rect key="frame" x="24" y="145" width="366" height="34"/>
+                                <color key="backgroundColor" red="0.96144119419999996" green="0.81072332229999999" blue="0.74515711669999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
@@ -152,7 +159,7 @@
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="7iV-GA-o2k">
                                 <rect key="frame" x="24" y="236" width="366" height="100"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" red="0.96144119419999996" green="0.81072332229999999" blue="0.74515711669999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="PFH-Fp-JNh"/>
                                 </constraints>
@@ -168,12 +175,14 @@
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EaC-jY-QYe">
                                 <rect key="frame" x="24" y="393" width="366" height="34"/>
+                                <color key="backgroundColor" red="0.96144119419999996" green="0.81072332229999999" blue="0.74515711669999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="qly-I9-tW9"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.96144119419999996" green="0.81072332229999999" blue="0.74515711669999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="N3k-j0-zHc" firstAttribute="leading" secondItem="qly-I9-tW9" secondAttribute="leading" constant="24" id="6Di-Ws-ACA"/>
                             <constraint firstItem="7iV-GA-o2k" firstAttribute="leading" secondItem="qly-I9-tW9" secondAttribute="leading" constant="24" id="6et-Fw-xwI"/>
@@ -197,7 +206,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="오늘은 무슨 일이 있었나요?" id="5Ce-Re-Sas">
                         <barButtonItem key="rightBarButtonItem" title="등록" id="nui-VR-BUw">
-                            <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="tapConfirmButton:" destination="Bj6-OP-hPD" id="mQf-1B-mNw"/>
                             </connections>
@@ -214,11 +223,11 @@
             </objects>
             <point key="canvasLocation" x="1484" y="-721"/>
         </scene>
-        <!--favorites-->
+        <!--Navigation Controller-->
         <scene sceneID="z1e-z4-f3y">
             <objects>
                 <navigationController id="erM-ns-2ge" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="favorites" image="star" catalog="system" selectedImage="star.fill" id="I8I-p8-f5x"/>
+                    <tabBarItem key="tabBarItem" image="star_empty_5050" selectedImage="star_filled_5050" id="I8I-p8-f5x"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="USQ-fX-scS">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -241,7 +250,7 @@
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="IUP-gX-xwE">
                                 <rect key="frame" x="0.0" y="88" width="414" height="725"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" red="0.96144119419999996" green="0.81072332229999999" blue="0.74515711669999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="rBo-B2-OV2">
                                     <size key="itemSize" width="414" height="123"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -285,7 +294,7 @@
                             </collectionView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="pdW-VD-MCf"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.96144119419999996" green="0.81072332229999999" blue="0.74515711669999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="pdW-VD-MCf" firstAttribute="bottom" secondItem="IUP-gX-xwE" secondAttribute="bottom" id="4bF-6V-a20"/>
                             <constraint firstItem="IUP-gX-xwE" firstAttribute="leading" secondItem="pdW-VD-MCf" secondAttribute="leading" id="MYE-gI-XnB"/>
@@ -332,7 +341,7 @@
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="1OA-Cn-Ud1">
                                 <rect key="frame" x="24" y="185.5" width="366" height="100"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" red="0.96144119419999996" green="0.81072332229999999" blue="0.74515711669999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="siq-FP-46j" userLabel="height = 150"/>
                                 </constraints>
@@ -362,6 +371,7 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f47-5p-8nR">
                                         <rect key="frame" x="0.0" y="0.0" width="48.5" height="31"/>
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="수정"/>
                                     </button>
@@ -369,14 +379,14 @@
                                         <rect key="frame" x="102.5" y="0.0" width="30" height="31"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" title="삭제">
-                                            <color key="titleColor" systemColor="systemRedColor"/>
+                                            <color key="titleColor" red="0.96144119419999996" green="0.4436124887678819" blue="0.41513489450774521" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                     </button>
                                 </subviews>
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="8oz-zx-sP2"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.96144119419999996" green="0.81072332229999999" blue="0.74515711669999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="8oz-zx-sP2" firstAttribute="trailing" secondItem="Io3-Et-Txk" secondAttribute="trailing" constant="24" id="1fq-q0-hrs"/>
                             <constraint firstItem="GTU-cx-k0S" firstAttribute="top" secondItem="HGj-hR-L8P" secondAttribute="bottom" constant="100" id="2dW-6E-YBa" userLabel="Stack View.top = Stack View.bottom + 100"/>
@@ -400,19 +410,14 @@
             <point key="canvasLocation" x="1483" y="-9"/>
         </scene>
     </scenes>
+    <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
     <resources>
-        <image name="pencil" catalog="system" width="128" height="113"/>
-        <image name="pencil.circle.fill" catalog="system" width="128" height="121"/>
-        <image name="star" catalog="system" width="128" height="116"/>
-        <image name="star.fill" catalog="system" width="128" height="116"/>
+        <image name="pencil_5050" width="30" height="30"/>
+        <image name="pencil_empty_5050" width="30" height="30"/>
+        <image name="star_empty_5050" width="30" height="30"/>
+        <image name="star_filled_5050" width="30" height="30"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
