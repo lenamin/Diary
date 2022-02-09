@@ -133,9 +133,22 @@ extension ViewController: UICollectionViewDataSource {
 
 extension ViewController:UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width/2, height: 220)
+        return CGSize(width: (UIScreen.main.bounds.width / 2) - 20, height: 200)
     }
     // 셀의 사이즈를 설정하는 역할
+}
+
+extension ViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        //didSelectItemAt : 특정 셀이 선택되었음을 알려주는 메서드
+        guard let viewController = self.storyboard?.instantiateViewController(withIdentifier: "DiaryDetailViewController") as? DiaryDetailViewController else {return}
+        let diary = self.diaryList[indexPath.row] //선택한 일기가 무엇인지 diary 상수에 대입한다
+        viewController.diary = diary
+        viewController.indexPath = indexPath
+        viewController.delegate = self
+        self.navigationController?.pushViewController(viewController, animated: true)
+        // 일기장 상세화면이 푸쉬되게 한다
+    } //DiaryDetailViewController가 푸쉬되도록 구현한다
 }
 
 extension ViewController: WriteDiaryViewDelegate{
@@ -147,5 +160,12 @@ extension ViewController: WriteDiaryViewDelegate{
                 // 왼쪽 값과 오른쪽 값을 비교한다
         })
         self.collectionView.reloadData() // 일기를 추가할 때마다 collection view에 일기목록이 표시되게 된다
+    }
+}
+
+extension ViewController : DiaryDetailViewDelegate {
+    func didSelectDelete(indexPath: IndexPath) {
+        self.diaryList.remove(at: indexPath.row) // row값에 있는 배열의 요소를 삭제한다
+        self.collectionView.deleteItems(at: [indexPath])
     }
 }

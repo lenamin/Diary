@@ -2,6 +2,11 @@
 
 import UIKit
 
+// 수정할 diary 객체를 받을 프로퍼티를 추가한다
+enum DiaryEditorMode {
+    case new
+    case edit(IndexPath, Diary) // 연관값으로 indexPath와 Diary객체를 전달받을 수 있도록 전달해준다.
+}
 
 // Delegate 정의 : 일기장 리스트 화면에 일기가 작성된 Diary 객체를 전달하기 위해
 protocol WriteDiaryViewDelegate: AnyObject {
@@ -18,6 +23,7 @@ class WriteDiaryViewController: UIViewController {
     private let datePicker = UIDatePicker() // UIDatePicker 인스턴스로 초기화
     private var diaryDate: Date? // 데이트 피커에 선택된 데이트를 저장하는 프로퍼티
     weak var delegate: WriteDiaryViewDelegate? // Delegate 프로퍼티를 정의한 것
+    var diaryEditorMode: DiaryEditorMode = .new // 초기값을 new로 선언 
     
     override func viewDidLoad() {
         super.viewDidLoad()

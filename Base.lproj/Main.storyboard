@@ -61,7 +61,7 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="TYz-fD-MBu">
                                 <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <color key="backgroundColor" red="0.96144119419999996" green="0.81072332229999999" blue="0.74515711669999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="DbX-uH-URw">
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="DbX-uH-URw">
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -134,7 +134,7 @@
         <!--오늘은 무슨 일이 있었나요?-->
         <scene sceneID="rRA-qp-aUW">
             <objects>
-                <viewController id="Bj6-OP-hPD" customClass="WriteDiaryViewController" customModule="Diary_2nd" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WriteDiaryViewController" id="Bj6-OP-hPD" customClass="WriteDiaryViewController" customModule="Diary_2nd" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="WbJ-Pi-hvB">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -158,23 +158,23 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="7iV-GA-o2k">
-                                <rect key="frame" x="24" y="236" width="366" height="100"/>
+                                <rect key="frame" x="24" y="236" width="366" height="300"/>
                                 <color key="backgroundColor" red="0.96144119419999996" green="0.81072332229999999" blue="0.74515711669999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="PFH-Fp-JNh"/>
+                                    <constraint firstAttribute="height" constant="300" id="PFH-Fp-JNh"/>
                                 </constraints>
                                 <color key="textColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="날짜" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N3k-j0-zHc">
-                                <rect key="frame" x="24" y="360" width="366" height="21"/>
+                                <rect key="frame" x="24" y="560" width="366" height="21"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EaC-jY-QYe">
-                                <rect key="frame" x="24" y="393" width="366" height="34"/>
+                                <rect key="frame" x="24" y="593" width="366" height="34"/>
                                 <color key="backgroundColor" red="0.96144119419999996" green="0.81072332229999999" blue="0.74515711669999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -311,7 +311,7 @@
         <!--Diary Detail View Controller-->
         <scene sceneID="MPh-WD-I0L">
             <objects>
-                <viewController id="ct2-wr-S8S" customClass="DiaryDetailViewController" customModule="Diary_2nd" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DiaryDetailViewController" id="ct2-wr-S8S" customClass="DiaryDetailViewController" customModule="Diary_2nd" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="t3f-wf-B0V">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -327,6 +327,7 @@
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Upk-fL-kg9">
                                         <rect key="frame" x="0.0" y="32.5" width="366" height="20.5"/>
+                                        <color key="backgroundColor" red="0.96144119419999996" green="0.81072332229999999" blue="0.74515711669999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -340,17 +341,17 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="1OA-Cn-Ud1">
-                                <rect key="frame" x="24" y="185.5" width="366" height="100"/>
+                                <rect key="frame" x="24" y="185.5" width="366" height="300"/>
                                 <color key="backgroundColor" red="0.96144119419999996" green="0.81072332229999999" blue="0.74515711669999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="siq-FP-46j" userLabel="height = 150"/>
+                                    <constraint firstAttribute="height" constant="300" id="siq-FP-46j" userLabel="height = 150"/>
                                 </constraints>
                                 <color key="textColor" systemColor="labelColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                             </textView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="HGj-hR-L8P">
-                                <rect key="frame" x="24" y="325.5" width="366" height="53"/>
+                                <rect key="frame" x="24" y="525.5" width="366" height="53"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="날짜" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vF6-go-POW">
                                         <rect key="frame" x="0.0" y="0.0" width="366" height="20.5"/>
@@ -360,6 +361,7 @@
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dBL-y5-GT9">
                                         <rect key="frame" x="0.0" y="32.5" width="366" height="20.5"/>
+                                        <color key="backgroundColor" red="0.96144119419999996" green="0.81072332229999999" blue="0.74515711669999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -367,20 +369,26 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="54" translatesAutoresizingMaskIntoConstraints="NO" id="GTU-cx-k0S">
-                                <rect key="frame" x="141" y="478.5" width="132.5" height="31"/>
+                                <rect key="frame" x="141" y="678.5" width="132.5" height="31"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f47-5p-8nR">
                                         <rect key="frame" x="0.0" y="0.0" width="48.5" height="31"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="수정"/>
+                                        <connections>
+                                            <action selector="tapEditButton:" destination="ct2-wr-S8S" eventType="touchUpInside" id="PeO-VF-nHQ"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Idi-a7-or7">
                                         <rect key="frame" x="102.5" y="0.0" width="30" height="31"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" title="삭제">
-                                            <color key="titleColor" red="0.96144119419999996" green="0.4436124887678819" blue="0.41513489450774521" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleColor" red="0.96144119419999996" green="0.19907507299999999" blue="0.30455025029999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="tapDeleteButton:" destination="ct2-wr-S8S" eventType="touchUpInside" id="yvN-j3-qhd"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -404,6 +412,11 @@
                             <constraint firstItem="8oz-zx-sP2" firstAttribute="trailing" secondItem="HGj-hR-L8P" secondAttribute="trailing" constant="24" id="zb9-nx-Zaa"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="contentsTextView" destination="1OA-Cn-Ud1" id="cIU-7N-EoS"/>
+                        <outlet property="dateLabel" destination="dBL-y5-GT9" id="c8B-xI-YjL"/>
+                        <outlet property="titleLabel" destination="Upk-fL-kg9" id="060-BR-GYy"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FmY-u9-LvO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
