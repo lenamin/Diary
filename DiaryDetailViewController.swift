@@ -57,6 +57,11 @@ class DiaryDetailViewController: UIViewController {
         // 데이터포맷이 한국어로 표시되도록
         return formatter.string(from:date)
     }
+    // 수정 notification center step 3: selector 함수 정의
+    @objc func editDiaryNotification(_ notification: Notification) {
+        
+    }
+    
     
     // 일기 수정하기 step 1
     @IBAction func tapEditButton(_ sender: UIButton) {
@@ -70,6 +75,19 @@ class DiaryDetailViewController: UIViewController {
         viewController.diaryEditorMode = .edit(indexPath, diary)
         // 열거형값 edit을 전달하고 연관값을 전달한다
         // -> 수정 버튼을 누르면 객체들이 전달된다
+        
+        // 수정 notification center step 2 : notification을 observing 하는 코드
+        NotificationCenter.default.addObserver(
+            self,
+            // 어떤 인스턴스에서 옵저빙할건지 알려줄 것
+            selector: #selector(editDiaryNotification(_:)),
+            // selector 함수를 전달, notification을 탐지하고 있다가 탐지되면 selector 함수를 호출한다
+            // step 3에서 정의한 함수를 호출한다
+            
+            name: NSNotification.Name("editDiary"),
+            object: nil)
+        // ===> 수정 버튼을 눌렀을 때 editDiary Notification을 관찰하는 옵저버가 추가가 되고
+        // ===> WriteDiaryViewController에서 수정된 diary 객체가 notification center를 통해서 post 될 때 editDiary notification method가 호출되게 된다
         
         self.navigationController?.pushViewController(viewController, animated: true)
         // writeDiaryViewController화면으로 푸쉬되도록 설정한다
