@@ -5,8 +5,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     
     // Diary 타입의 비어있는 배열로 초기화한다
-    // diaryList 프로퍼티를 프로퍼티 옵저버로 만든다 (UserDefaults 때문)
     private var diaryList = [Diary](){
+        // UserDefaults step 2
+        // diaryList 프로퍼티를 프로퍼티 옵저버로 만든다 (UserDefaults 때문)
+        // 지켜보고 있다가 변경될 때 마다 userDefaults에 저장해주는 것
         didSet { // didSet 될 때
             self.saveDiaryList()
             // diaryList 배열에 일기가 추가되거나 변경될 때마다 userDefaults 에 저장된다.
@@ -19,6 +21,7 @@ class ViewController: UIViewController {
         self.loadDiaryList()
     }
     
+    // step 2 : diaryList 배열에 저장된 일기를 CollectionView에 표시되도록 한다 -> collectionView 설정하는 메서드
     private func configureCollectionView() {
         self.collectionView.collectionViewLayout = UICollectionViewFlowLayout()
         self.collectionView.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -26,52 +29,59 @@ class ViewController: UIViewController {
         
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
-        // protocol을 채택하고 필수 메서드를 채택하러 가보자
+        // step 3 : protocol을 채택하고 필수 메서드를 구현하러 가보자
     }
     
-    // segue 통해 이동하므로 prepare 메서드를 오버라이드 한다
+    // 받아오기 위한 step 1: segue 통해 이동하므로 prepare 메서드를 오버라이드 해야한다
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let writeDiaryViewController = segue.destination as? WriteDiaryViewController {
-            writeDiaryViewController.delegate = self // Delegate를 위임받는다
+            writeDiaryViewController.delegate = self // Delegate를 위임받는다 -> WriteDiaryViewDelegate 채택하라고 나오므로 채택해준다
         }
             // segue 로 이동되는 View Controller가 뭔지 알 수 있게 한다
     }
     
+    //------------------------- UserDefaults -----------------------------------//
     // 일기들을 userDefaults에 딕셔너리 배열 형태로 저장한다
-    private func saveDiaryList(){
+    // UserDefaults step 1
+    private func saveDiaryList() {
         let date = self.diaryList.map { // 배열에 있는 요소들을 딕셔너리 형태로 매핑 시켜준다
             [
-                "title": $0.title, // 딕셔너리 title key에 다이어리의 title이 저장되도록 한다.
+                "title": $0.title, // 딕셔너리 title 키에 다이어리의 title이 저장되도록 한다.
                 "contents": $0.contents,
                 "date": $0.date,
                 "isStar": $0.isStar
             ]
         }
-        let userDefaults = UserDefaults.standard // UserDefaults에 접근한다
-        userDefaults.set(date, forKey: "diaryList") // 첫 번째 파라미터 -> 일기가 저장되어 있는 날짜를 넘겨주고 / 두 번째 파라미터에는 배열 이름을 넘겨준다
+        let userDefaults = UserDefaults.standard
+        // userDefaults라는 상수를 선언하고 UserDefaults에 접근할 수 있도록 한다
+        
+        userDefaults.set(date, forKey: "diaryList")
+        // 첫 번째 파라미터 -> 일기가 저장되어 있는 날짜를 넘겨주고 / 두 번째 파라미터에는 배열 이름을 넘겨준다
     }
     
     // 이제 저장된 값을 불러오자
+    // UserDefaults step 2
     private func loadDiaryList(){
         let userDefaults = UserDefaults.standard // UserDefaults 에 접근한다
         guard let data = userDefaults.object(forKey: "diaryList") as? [[String: Any]] else {return}
-        // 일기장 리스트를 가져온다
+        // 다이어리 key 값을 넘겨줘서 일기장 리스트를 가져온다
         // object 메서드는 any 타입으로 리턴되므로 딕셔너리 배열 형태로 타입 캐스팅을 해준다
         // 타입캐스팅 실패 시 nil이 될 수 있으므로 guard 문으로 옵셔널 바인딩까지 해준 코드이다
         
         // 불러온 데이터를 diaryList에 넣어준다 (diary 타입이 되게 매핑 시켜준다)
         self.diaryList = data.compactMap {
-            guard let title = $0["title"] as? String else {return nil}
+            guard let title = $0["title"] as? String else { return nil }
             // 축약인자로 딕셔너리에 접근하고 title 키로 딕셔너리 value를 가져온다
             // 딕셔너리 밸류가 any 타입이므로 string으로 타입 변환 해준 것
             // 타입 캐스팅 실패할 경우 대비해 guard 문으로 옵셔널 바인딩 한 것
             // 아래도 모두 동일
-            guard let contents = $0["contents"] as? String else {return nil}
-            guard let date = $0["date"] as? Date else {return nil}
-            guard let isStar = $0["isStar"] as? Bool else {return nil}
+            guard let contents = $0["contents"] as? String else { return nil }
+            guard let date = $0["date"] as? Date else { return nil }
+            guard let isStar = $0["isStar"] as? Bool else { return nil }
             
-            return Diary(title: title, contents: contents, date: date, isStar: false)
+            return Diary(title: title, contents: contents, date: date, isStar: isStar)
             // Diary 타입이 되게 인스턴스화 한다
+            // 그리고 이 loadDiaryList() 메서드 자체를 viewDidLoad()에서 호출한다
         }
         
         // 일기를 불러올 때 날짜를 최신순으로 정렬되도록 한다
@@ -79,7 +89,7 @@ class ViewController: UIViewController {
         self.diaryList = self.diaryList.sorted(by: {
             $0.date.compare($1.date) == .orderedDescending // 내림차순으로 정렬되게
                 // 배열에 왼쪽과 오른쪽 날짜를 iteration 돌면서 비교
-                // 왼쪽 값과 오른쪽 값을 비교한다
+                // 왼쪽 date 값과 오른쪽 date 값을 비교한다
         })
     }
     
@@ -87,21 +97,22 @@ class ViewController: UIViewController {
     private func dateToString(date: Date) -> String {
         let formatter = DateFormatter() // dateFormatter() 객체 생성
         formatter.dateFormat = "yy년 MM월 dd일(EEEEE)"
-        formatter.locale = Locale(identifier: "ko_KR")
-        // 데이터포맷이 한국어로 표시되도록
-        return formatter.string(from:date)
+        formatter.locale = Locale(identifier: "ko_KR") // 데이터포맷이 한국어로 표시되도록
+        return formatter.string(from: date)
     }
 }
 
+// step 3
 extension ViewController: UICollectionViewDataSource {
 
-    // Collection View로 보여주는 데이터소스들을 관리하는 객체
-    // 필수 메서드부터 구현해보자
+//     Collection View로 보여주는 데이터소스들는 컬렉션뷰로 보여주는 컨텐츠를 관리하는 객체
+//     필수 메서드부터 구현해보자
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // 지정된 섹션에 표시할 셀의 갯수를 표시한다
         // diaryList 배열의 갯수만큼 표시되게 한다.
         return self.diaryList.count
     }
+
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // collection View 지정된 위치에 표시할 셀을 요청하는 메서드
@@ -133,7 +144,7 @@ extension ViewController: UICollectionViewDataSource {
 
 extension ViewController:UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (UIScreen.main.bounds.width / 2) - 20, height: 200)
+        return CGSize(width: (UIScreen.main.bounds.width / 2) - 20, height: 200) // 셀이 행에 두 개씩 표시되도록 해주기 위해서
     }
     // 셀의 사이즈를 설정하는 역할
 }
@@ -151,9 +162,12 @@ extension ViewController: UICollectionViewDelegate {
     } //DiaryDetailViewController가 푸쉬되도록 구현한다
 }
 
-extension ViewController: WriteDiaryViewDelegate{
+// step 1에서 -> WriteDiaryViewController delegate를 채택하기 위한 extension
+extension ViewController: WriteDiaryViewDelegate {
     func didSelectedRegister(diary: Diary) {
-        self.diaryList.append(diary) // 일기 작성화면에서 등록될 때마다 diary 배열에 추가되게 된다
+        self.diaryList.append(diary) // 일기 작성화면에서 등록될 때마다 diary 배열에 등록된 일기가 추가되게 된다
+        
+        // 일기 등록될 때도 최신순으로 정렬되게 함
         self.diaryList = self.diaryList.sorted(by: {
             $0.date.compare($1.date) == .orderedDescending // 내림차순으로 정렬되게
                 // 배열에 왼쪽과 오른쪽 날짜를 iteration 돌면서 비교

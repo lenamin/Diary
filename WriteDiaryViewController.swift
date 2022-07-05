@@ -8,7 +8,7 @@ enum DiaryEditorMode {
     case edit(IndexPath, Diary) // 연관값으로 indexPath와 Diary객체를 전달받을 수 있도록 전달해준다.
 }
 
-// Delegate 정의 : 일기장 리스트 화면에 일기가 작성된 Diary 객체를 전달하기 위해
+// *4 Delegate 정의 : 일기장 리스트 화면에 일기가 작성된 Diary 객체를 전달하기 위해
 protocol WriteDiaryViewDelegate: AnyObject {
     func didSelectedRegister(diary: Diary)
 } // 일기가 작성된 diary 객체를 전달 할 것
@@ -22,7 +22,7 @@ class WriteDiaryViewController: UIViewController {
     
     private let datePicker = UIDatePicker() // UIDatePicker 인스턴스로 초기화
     private var diaryDate: Date? // 데이트 피커에 선택된 데이트를 저장하는 프로퍼티
-    weak var delegate: WriteDiaryViewDelegate? // Delegate 프로퍼티를 정의한 것
+    weak var delegate: WriteDiaryViewDelegate? // Delegate 프로퍼티를 정의한 것 *4
     var diaryEditorMode: DiaryEditorMode = .new // 초기값을 new로 선언 
     
     override func viewDidLoad() {
@@ -32,8 +32,7 @@ class WriteDiaryViewController: UIViewController {
         
         self.configureContentsTextView() // 아래에서 만든 configureContentsTextView() 함수를 호출한다
         self.configureDatePicker()
-        self.confirmButton.isEnabled = false
-            // 제목, 내용, 날짜에 아무것도 작성 안된 경우인 경우니까 등록버튼을 비활성화되도록 만들어준다.
+        self.confirmButton.isEnabled = false // 제목, 내용, 날짜에 아무것도 작성 안된 경우인 경우니까 등록버튼을 비활성화되도록 만들어준다.
         self.configureInputField()
     }
     
@@ -45,27 +44,30 @@ class WriteDiaryViewController: UIViewController {
         
         self.datePicker.addTarget(self, action: #selector(datePickerValueDidChange(_:)), for: .valueChanged)
         // UIController 객체가 이벤트에 응답하는 방식을 설정해주는 메서드
-        // 첫 번째 파라미터 : targer (해당 컨트롤러에서 처리할 거니까 self)
-        // 두 번째 파라미터 : action (이벤트가 발생했을 때 응답하여 호출될 메서드를 selector로 넘겨준다. 이에 넘겨줄 메서드 별도로 만들어야 한다. -> datePickerValueDidChange()메서드 넘겨주기)
+        // 첫 번째 파라미터 : target 설정해준다 (해당 컨트롤러에서 처리할 거니까 self)
+        // 두 번째 파라미터 : action (이벤트가 발생했을 때 응답하여 호출될 메서드를 selector로 넘겨준다. selector 안에 넘겨줄 메서드 별도로 만들어야 한다. -> datePickerValueDidChange()메서드 넘겨주기)*1
         // 세 번째 파라미터 : 어떤 이벤트가 일어났을 때 액션에 정의한 메서드를 호출할 것인지 설정한다 (값이 변경될 때 date Picker did change 메서드를 호출한다
-        
+
         self.dateTextField.inputView = self.datePicker // text field를 선택했을 때 키보드가 뜨는 것이 아닌 datePicker가 뜬다
 
     }
     
     private func configureInputField(){
-        self.contentsTextView.delegate = self // UITextViewDelegate를 채택해야 한다
+        self.contentsTextView.delegate = self
+        // UITextViewDelegate를 채택해야 한다 *2에서 extension으로 delegate 채택함
         
         self.titleTextField.addTarget(self, action: #selector(titleTextFieldDidChange(_:)), for: .editingChanged)
-        // 제목 텍스트필드에 텍스트가 입력될 때마다 selector가 받아온 메서드를 호출한다
+        // 제목 텍스트필드에 텍스트가 입력될 때마다 selector가 받아온 메서드(titleTextFieldDidChange) 를 호출한다
         
         self.dateTextField.addTarget(self, action: #selector(dateTextFieldDidChange(_:)), for: .editingChanged)
         // 날짜가 변경될 때마다 selector가 받아온 메서드를 호출한다
     }
     
     //가져온다
+    // 일기 작성을 모두 마친 뒤 confirmButton을 누르면 diary 객체를 생성하고 delegate에 정의한 didSelect method를 호출해서
+    // method 파라미터에 생성된 diary 객체를 생성해준다
     @IBAction func tapConfirmButton(_ sender: UIBarButtonItem) {
-        guard let title = self.titleTextField.text else {return} // 작성한 제목을 가져오고
+        guard let title = self.titleTextField.text else {return} // 작성한 제목을 가져오고 (옵셔널 바인딩)
         guard let contents = self.contentsTextView.text else {return} // 작성한 내용을 가져오고
         guard let date = self.diaryDate else {return} // date picker에서 선택된 날짜를 가져온다
         
@@ -77,8 +79,9 @@ class WriteDiaryViewController: UIViewController {
         
         self.navigationController?.popViewController(animated: true)
         // 화면이 이전 화면으로 이동되게 한다. (일기장 화면으로)
-    }
+    } // 전달될 준비 마침! 이제 View controller 로 가자 
     
+    // *1
     @objc private func datePickerValueDidChange(_ sender: UIDatePicker){
         let formmater = DateFormatter()
         // 날짜와 텍스트를 변환해주는 역할 (데이트 타입을 사람이 읽을 수 있도록 해주거나, 반대의 역할)
@@ -90,8 +93,6 @@ class WriteDiaryViewController: UIViewController {
         
         formmater.locale = Locale(identifier: "ko_KR")
         // 데이트 포맷이 한국어로 표현하도록 해준다
-        
-        
         
         self.diaryDate = datePicker.date
         // diaryDate 프로퍼티에 datePicker에서 선택한 date 타입을 선택
@@ -113,11 +114,11 @@ class WriteDiaryViewController: UIViewController {
     // configureInputField() 메서드에서 보내는 selector 정의를 위해 다음과 같이 구현한다.
     @objc private func titleTextFieldDidChange(_ textField: UITextField) {
         self.validateInputField()
-    }
+    } // 제목이 변경될 때 마다 등록버튼이 활성화되는지 여부를 판단한다
     
     @objc private func dateTextFieldDidChange(_ textField: UITextField) {
         self.validateInputField()
-    }
+    } // 날짜가 변경될 때 마다 등록버튼이 활성화되는지 여부를 판단한다
     
     private func configureContentsTextView(){
         let borderColor = UIColor(red: 64/255, green: 64/255, blue: 64/255, alpha: 0.2)
@@ -135,27 +136,27 @@ class WriteDiaryViewController: UIViewController {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        // touchesBegan()은 사용자가 화면을 터치하면 호출되는 메서드
+        // touchesBegan()은 사용자가 빈 화면을 터치하면 호출되는 메서드
+        // 키보드가 사라진다
         self.view.endEditing(true)
-        
     }
 
+    // *3
+    // 등록버튼의 활성화 여부를 판단하는 메서드
     private func validateInputField(){
-        self.confirmButton.isEnabled =
-        !(self.titleTextField.text?.isEmpty ?? true)
-        && !(self.dateTextField.text?.isEmpty ?? true)
-        && !self.contentsTextView.text.isEmpty
+        self.confirmButton.isEnabled = !(self.titleTextField.text?.isEmpty ?? true)
+                                    && !(self.dateTextField.text?.isEmpty ?? true)
+                                    && !self.contentsTextView.text.isEmpty
         // 제목의 텍스트필드가 비어있지 않고, 날짜 텍스트필드가 비어있지 않고, 내용텍스트뷰가 비어있지 않으면
         // 즉, 모든 inputField가 비어있지않으면 등록 버튼 활성화되게 한다.
     }
 }
 
-
-
+/*2*/
 extension WriteDiaryViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
-        // 일기장에 내용을 입력할 때마다 호출함
-        
+        // 일기장에 내용을 입력할 때마다 이 메서드가 호출됨
+        // *3
         self.validateInputField()
         // 텍스트필드에 내용이 입력될 때마다 이 함수가 호출되도록 만들어서 등록버튼 활성화 여부를 판단할 수 있도록 한다
     }
