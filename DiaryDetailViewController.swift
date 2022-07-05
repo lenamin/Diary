@@ -2,16 +2,18 @@
 
 import UIKit
 
+// 삭제 step 3. 일기를 삭제하기 위한 delegate
 protocol DiaryDetailViewDelegate: AnyObject {
     func didSelectDelete(indexPath: IndexPath)
-}// 일기를 삭제하기 위한 delegate
+}
 
 class DiaryDetailViewController: UIViewController {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var contentsTextView: UITextView!
     @IBOutlet weak var dateLabel: UILabel!
-    weak var delegate: DiaryDetailViewDelegate?
+    // 삭제 step 4. 프로퍼티 선언
+    weak var delegate: DiaryDetailViewDelegate? // protocol DiaryDetailViewDelegate의 프로퍼티
     
     
     // 삭제 step 1. 일기장에서 전달받을 프로퍼티를 선언한다
@@ -58,11 +60,14 @@ class DiaryDetailViewController: UIViewController {
         // writeDiaryViewController화면으로 푸쉬되도록 설정한다
     }
     
+    // 삭제 step 5. 삭제 버튼을 누르면 수행될 동작들
     @IBAction func tapDeleteButton(_ sender: UIButton) {
-        guard let indexPath = self.indexPath else {return}
+        guard let indexPath = self.indexPath else { return }
+        
         self.delegate?.didSelectDelete(indexPath: indexPath)
-            // delegate에서 정의한 didSelectDelete 메서드를 호출해서 indexPath를 전달해준다
+        // delegate에서 정의한 didSelectDelete 메서드를 호출해서 메서드 파라미터에 indexPath를 전달해준다
+        
         self.navigationController?.popViewController(animated: true)
-            // 삭제한 이후에는 전화면으로 이동하도록 한다
+        // 삭제 버튼이 눌러졌을 때 삭제한 이후에는 전 화면으로 이동하도록 한다
     }
 }
