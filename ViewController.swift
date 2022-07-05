@@ -190,4 +190,10 @@ extension ViewController : DiaryDetailViewDelegate {
         self.diaryList.remove(at: indexPath.row) // 전달받은 indexPasth row값에 있는 배열의 요소를 삭제한다
         self.collectionView.deleteItems(at: [indexPath]) // 전달받은 indexPath를 넘겨줘서 컬렉션 뷰에서 일기가 사라지도록 구현한다.
     }
+    
+    // 즐겨찾기 상태가 일기장 리스트에 나타나도록 구현하기 step 3 : 정의해둔 메서드 구현하기
+    func didSelectStar(indexPath: IndexPath, isStar: Bool) {
+        self.diaryList[indexPath.row].isStar = isStar
+    }
 }
+
