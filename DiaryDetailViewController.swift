@@ -14,16 +14,17 @@ class DiaryDetailViewController: UIViewController {
     weak var delegate: DiaryDetailViewDelegate?
     
     
-    // 일기장에서 전달받을 프로퍼티를 선언한다
+    // 삭제 step 1. 일기장에서 전달받을 프로퍼티를 선언한다
     var diary: Diary?
     var indexPath: IndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.configureView() // 일기장 리스트화면에서 일기장을 선택했을 때 다이어리 프로퍼티에 다이어리 객체를 넘겨주게 되면 일기장 상세화면에 제목, 날짜가 표시된다.
+        self.configureView()
+        // 일기장 리스트화면에서 일기장을 선택했을 때 -> 다이어리 프로퍼티에 다이어리 객체를 넘겨주게 되면 일기장 상세화면에 제목, 날짜가 표시된다.
     }
     
-    // 프로퍼티를 통해 전달받은 다이어리 객체를 View에 초기화 시켜준다
+    // 삭제 step 2. 프로퍼티를 통해 전달받은 다이어리 객체를 View에 초기화 시켜준다
     private func configureView() {
         guard let diary = self.diary else { return } // 옵셔널 바인딩해서 초기화 한 것
         self.titleLabel.text = diary.title // diary의 제목이 표시되게
