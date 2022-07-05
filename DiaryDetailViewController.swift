@@ -58,12 +58,12 @@ class DiaryDetailViewController: UIViewController {
         return formatter.string(from:date)
     }
     
+    // 일기 수정하기 step 1
     @IBAction func tapEditButton(_ sender: UIButton) {
         guard let viewController = self.storyboard?.instantiateViewController(identifier: "WriteDiaryViewController") as? WriteDiaryViewController else {return}
         // instantiateViewController 메서드를 통해 "WriteDiaryViewController"에 인스턴스를 가져온다.
         
-        
-        // 열거형에서 정의했던 값을 가져온다
+        // 일기 수정하기 step 4 : 열거형에서 정의했던 값을 가져온다
         guard let indexPath = self.indexPath else { return }
         guard let diary = self.diary else { return }
         
