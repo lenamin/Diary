@@ -100,6 +100,29 @@ class WriteDiaryViewController: UIViewController {
         let diary = Diary(title: title, contents: contents, date: date, isStar: false)
         // diary 객체 생성 (제목, 내용, 날짜 각각 넘겨주고, 즐겨찾기는 우선 false로 넘겨준다)
         
+        
+        // 수정 notification center step 1 :
+        switch self.diaryEditorMode {
+        case .new:
+            // 일기 등록하는 행위
+            self.delegate?.didSelectedRegister(diary: diary)
+            
+            // editorMode가 edit이라면
+        case let .edit(indexPath, diary):
+            NotificationCenter.default.post(
+                name: NSNotification.Name("editDiary"),
+                // post 메서드를 호출한다
+                // post 메서드의 name 파라미터에는 notification의 이름을 적어주면 된다
+                // 이 이름으로 옵저버에서 설정한 이름의 노티피케이션 이벤트가 발생했는지 관찰
+                object: diary,
+                // notification center를 통해 전달할 객체
+                userInfo: ["indexPath.row": indexPath.row]
+                // 수정이 일어나면 컬렉션뷰에도 수정이 일어나야 하므로 해당 키 값에 value가 변하도록
+            )
+        }
+        
+        
+        
         self.delegate?.didSelectedRegister(diary: diary)
         // didSelectedRegister에 diary 객체를 넘겨준다
         
