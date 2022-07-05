@@ -149,17 +149,22 @@ extension ViewController:UICollectionViewDelegateFlowLayout {
     // 셀의 사이즈를 설정하는 역할
 }
 
+// 상세화면을 보기 위한 코드
 extension ViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //didSelectItemAt : 특정 셀이 선택되었음을 알려주는 메서드
-        guard let viewController = self.storyboard?.instantiateViewController(withIdentifier: "DiaryDetailViewController") as? DiaryDetailViewController else {return}
+        
+        // DiaryDetailViewController가 Push 되도록 구현한다
+        guard let viewController = self.storyboard?.instantiateViewController(withIdentifier: "DiaryDetailViewController") as? DiaryDetailViewController else { return }
+        
         let diary = self.diaryList[indexPath.row] //선택한 일기가 무엇인지 diary 상수에 대입한다
+        
         viewController.diary = diary
         viewController.indexPath = indexPath
         viewController.delegate = self
         self.navigationController?.pushViewController(viewController, animated: true)
         // 일기장 상세화면이 푸쉬되게 한다
-    } //DiaryDetailViewController가 푸쉬되도록 구현한다
+    }
 }
 
 // step 1에서 -> WriteDiaryViewController delegate를 채택하기 위한 extension

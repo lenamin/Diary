@@ -2,9 +2,10 @@
 
 import UIKit
 
+// 일기를 삭제하기 위한 delegate
 protocol DiaryDetailViewDelegate: AnyObject {
     func didSelectDelete(indexPath: IndexPath)
-}// 일기를 삭제하기 위한 delegate
+}
 
 class DiaryDetailViewController: UIViewController {
 
