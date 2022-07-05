@@ -84,6 +84,12 @@ class DiaryDetailViewController: UIViewController {
     }
     // 즐겨찾기 step 3 selector에 넣기 위한 메서드 정의
     @objc func tapStarButton() {
-        //
+        guard let isStar = self.diary?.isStar else { return }
+        if isStar {
+            self.starButton?.image = UIImage(systemName: "star")
+        } else {
+            self.starButton?.image = UIImage(systemName: "star.fill")
+        }
+        self.diary?.isStar = !isStar // true이면 false가 되게, false이면 true가 되게 
     }
 }
