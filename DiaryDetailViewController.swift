@@ -12,6 +12,9 @@ class DiaryDetailViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var contentsTextView: UITextView!
     @IBOutlet weak var dateLabel: UILabel!
+    // 즐겨찾기 step 1
+    var starButton: UIBarButtonItem?
+    
     // 삭제 step 4. 프로퍼티 선언
     weak var delegate: DiaryDetailViewDelegate? // protocol DiaryDetailViewDelegate의 프로퍼티
     
@@ -32,7 +35,16 @@ class DiaryDetailViewController: UIViewController {
         self.titleLabel.text = diary.title // diary의 제목이 표시되게
         self.contentsTextView.text = diary.contents
         self.dateLabel.text = self.dateToString(date: diary.date)
-        // date 타입으로 되어 있으므로 dateformatter로 문자열을 만들어준다. 
+        // date 타입으로 되어 있으므로 dateformatter로 문자열을 만들어준다.
+        
+        // 즐겨찾기 step 2 UIBarButtonItem 인스턴스 생성
+        // 즐겨찾기 step 4 selector에, 정의한 메서드 넣기
+        self.starButton = UIBarButtonItem(image: nil, style: .plain, target: self, action: #selector(tapStarButton))
+        
+        // 즐겨찾기 isStar가 true이면 채워진 별이, 아니면 테두리만 있는 별이 뜨도록 설정
+        self.starButton?.image = diary.isStar ? UIImage(systemName: "star.fill") : UIImage(systemName: "star")
+        self.starButton?.tintColor = .red
+        self.navigationItem.rightBarButtonItem = self.starButton
     }
     
     private func dateToString(date: Date) -> String {
@@ -69,5 +81,9 @@ class DiaryDetailViewController: UIViewController {
         
         self.navigationController?.popViewController(animated: true)
         // 삭제 버튼이 눌러졌을 때 삭제한 이후에는 전 화면으로 이동하도록 한다
+    }
+    // 즐겨찾기 step 3 selector에 넣기 위한 메서드 정의
+    @objc func tapStarButton() {
+        //
     }
 }
