@@ -59,7 +59,20 @@ class DiaryDetailViewController: UIViewController {
     }
     // 수정 notification center step 3: selector 함수 정의
     @objc func editDiaryNotification(_ notification: Notification) {
+        // 수정된 내용이 뷰에 반영되도록 step 1: post를 통해 수정된 diary 객체를 가져온다
+        guard let diary = notification.object as? Diary else { return }
+        // notification.object 프로퍼티를 통해 diary 객체를 가져올 수 있다
         
+        guard let row = notification.userInfo?["indexPath.row"] as? Int else { return }
+        // post 할 때 userInfo에 IndexPath.row 값을 딕셔너리로 보낸 것을 가져오는 코드
+        // 딕셔너리 키가 indexPath.row 값에 해당하는 값을 가져오는 것 (Int로 타입캐스팅 해줌)
+        
+        // print("row: \(row)")
+        self.diary = diary
+        // print("diary: \(diary)")
+        // diary 프로퍼티에 수정된 diary를 전달해준다
+        self.configureView()
+        // 수정된 일기내용으로 뷰가 업데이트되게
     }
     
     
@@ -92,6 +105,14 @@ class DiaryDetailViewController: UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
         // writeDiaryViewController화면으로 푸쉬되도록 설정한다
     }
+    
+    
+    // // 수정된 내용이 뷰에 반영되도록 step 2: 수정된 뷰 인스턴스가 deinit 될 때 옵저버를 삭제한다
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+        // 해당 인스턴스에 추가된 옵저버가 모두 제거되게 해준다
+    }
+    
     
     // 삭제 step 5. 삭제 버튼을 누르면 수행될 동작들
     @IBAction func tapDeleteButton(_ sender: UIButton) {
