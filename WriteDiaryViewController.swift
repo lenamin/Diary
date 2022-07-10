@@ -111,7 +111,7 @@ class WriteDiaryViewController: UIViewController {
             self.delegate?.didSelectedRegister(diary: diary)
             
             // editorMode가 edit이라면 (.edit 에서 diary를 넘기면 수정 전 diary 객체가 전달된다)
-        case let .edit(indexPath, diary):
+        case let .edit(_, diary):
             let diary = Diary(
                 uuidString: diary.uuidString,
                 title: title,

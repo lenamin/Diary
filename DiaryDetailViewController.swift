@@ -31,6 +31,22 @@ class DiaryDetailViewController: UIViewController {
         super.viewDidLoad()
         self.configureView()
         // 일기장 리스트화면에서 일기장을 선택했을 때 -> 다이어리 프로퍼티에 다이어리 객체를 넘겨주게 되면 일기장 상세화면에 제목, 날짜가 표시된다.
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(starDiaryNotification(_:)),
+            name: NSNotification.Name("starDiary"),
+            object: nil)
+    }
+    
+    @objc func starDiaryNotification(_ notification: Notification) {
+        guard let starDiary = notification.object as? [String: Any] else { return }
+        guard let isStar = starDiary["isStar"] as? Bool else { return }
+        guard let uuidString = starDiary["uuidString"] as? String else { return }
+        guard let diary = self.diary else { return }
+        if diary.uuidString == uuidString {
+            self.diary?.isStar = isStar
+            self.configureView()
+        }
     }
     
     // 삭제 step 2. 프로퍼티를 통해 전달받은 다이어리 객체를 View에 초기화 시켜준다
@@ -64,7 +80,6 @@ class DiaryDetailViewController: UIViewController {
         guard let diary = notification.object as? Diary else { return }
         // notification.object 프로퍼티를 통해 diary 객체를 가져올 수 있다
         
-        guard let row = notification.userInfo?["indexPath.row"] as? Int else { return }
         // post 할 때 userInfo에 IndexPath.row 값을 딕셔너리로 보낸 것을 가져오는 코드
         // 딕셔너리 키가 indexPath.row 값에 해당하는 값을 가져오는 것 (Int로 타입캐스팅 해줌)
         
@@ -153,8 +168,8 @@ class DiaryDetailViewController: UIViewController {
         NotificationCenter.default.post(
             name: NSNotification.Name("StarDiary"),
             object: [
-                "diary": self.diary,// 즐겨찾기 된 diary 객체를 notification에 전달
-                "isStar": self.diary?.isStar ?? false, //isStar 키에는 diary.isStar를 넘겨줘서 즐겨찾기 상태를
+                "diary": self.diary, // 즐겨찾기 된 diary 객체를 notification에 전달
+                "isStar": self.diary?.isStar, //isStar 키에는 diary.isStar를 넘겨줘서 즐겨찾기 상태를
                 "uuidString": diary?.uuidString // indexPath 키에는 indexPath를 넘겨준다
                 ],
             userInfo: nil
