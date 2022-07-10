@@ -2,7 +2,7 @@
 
 import UIKit
 
-class StarViewController: UIViewController, UICollectionViewDelegate {
+class StarViewController: UIViewController {
     // 탭바에서 즐겨찾기만 모아보기 step 1 : outlet 변수 정의하기
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -12,12 +12,31 @@ class StarViewController: UIViewController, UICollectionViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureCollectionView()
+        self.loadStarDiaryList()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(editDiaryNotification(_:)),
+            name: NSNotification.Name("editDiary"),
+            object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(starDiaryNotification(_:)),
+            name: NSNotification.Name("starDiary"),
+            object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(deleteDiaryNotification(_:)),
+            name: NSNotification.Name("deleteDiary"),
+            object: nil)
     }
     
-    // 탭바에서 즐겨찾기만 모아보기 step 4 : StarViewController로 이동할 때마다 즐겨찾기 된 일기들을 불러온다
+    /// 탭바에서 즐겨찾기만 모아보기 step 4 : StarViewController로 이동할 때마다 즐겨찾기 된 일기들을 불러온다
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.loadStarDiaryList()
+        
     }
     
     private func dateToString(date: Date) -> String {
@@ -27,7 +46,7 @@ class StarViewController: UIViewController, UICollectionViewDelegate {
         return formatter.string(from: date)
     }
     
-    // 컬렉션뷰에 즐겨찾기 내용 나타내기 step 1
+    /// 컬렉션뷰에 즐겨찾기 내용 나타내기 step 1
     private func configureCollectionView() {
         // collectionView를 코드로 UI를 구성하기 위해, UICollectionViewFlowLayout 인스턴스를 대입시켜 준다
         self.collectionView.collectionViewLayout = UICollectionViewFlowLayout()
@@ -37,7 +56,7 @@ class StarViewController: UIViewController, UICollectionViewDelegate {
     }
     
     
-    // 탭바에서 즐겨찾기만 모아보기 step 3 : 즐겨찾기 일기들을 가져오기
+    /// 탭바에서 즐겨찾기만 모아보기 step 3 : 즐겨찾기 일기들을 가져오기
     private func loadStarDiaryList() {
         let userDefaults = UserDefaults.standard // userDefaults에 접근
         guard let data = userDefaults.object(forKey: "diaryList") as? [[String : Any]] else { return } // guard 문으로 옵셔널 바인딩
@@ -54,9 +73,40 @@ class StarViewController: UIViewController, UICollectionViewDelegate {
         }).sorted(by: { // 그 중에서 날짜가 최신순으로 정렬되도록 한다
             $0.date.compare($1.date) == .orderedDescending
         })
+    }
+    
+    @objc func editDiaryNotification(_ notification: Notification) {
+        guard let diary = notification.object as? Diary else { return }
+        guard let row = notification.userInfo?["IndexPath.row"] as? Int else { return }
+        self.diaryList[row] = diary // 수정된 내용 대입
+        self.diaryList = self.diaryList.sorted(by: {
+            $0.date.compare($1.date) == .orderedDescending // 최신 순 정렬
+        })
         self.collectionView.reloadData()
     }
-
+    
+    @objc func starDiaryNotification(_ notification: Notification) {
+        guard let starDiary = notification.object as? [String: Any] else { return }
+        guard let diary = starDiary["diary"] as? Diary else { return }
+        guard let isStar = starDiary["isStar"] as? Bool else { return }
+        guard let indexPath = starDiary["index{ath"] as? IndexPath else { return }
+        if !isStar {
+            self.diaryList.remove(at: indexPath.row)
+            self.collectionView.deleteItems(at: [indexPath])
+        } else {
+            self.diaryList.append(diary)
+            self.diaryList = self.diaryList.sorted(by: {
+                $0.date.compare($1.date) == .orderedDescending // 최신 순 정렬
+            })
+            self.collectionView.reloadData()
+        }
+    }
+    
+    @objc func deleteDiaryNotification(_ notification: Notification) {
+        guard let indexPath = notification.object as? IndexPath else { return }
+        self.diaryList.remove(at: indexPath.row)
+        self.collectionView.deleteItems(at: [indexPath])
+    }
 }
 
 // 컬렉션뷰에 즐겨찾기 내용 나타내기 step 2 : 필수 메서드 구현하기
@@ -77,5 +127,16 @@ extension StarViewController: UICollectionViewDataSource {
 extension StarViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: UIScreen.main.bounds.width - 20, height: 80)
+    }
+}
+
+extension StarViewController: UICollectionViewDelegate {
+    /// 즐겨찾기 탭에서 해당 일기를 누르면 해당 일기 화면으로 이동한다
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let viewController = self.storyboard?.instantiateViewController(withIdentifier: "DiaryDetailViewController") as? DiaryDetailViewController else { return }
+        let diary = self.diaryList[indexPath.row]
+        viewController.diary = diary
+        viewController.indexPath = indexPath
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 }

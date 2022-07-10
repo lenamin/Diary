@@ -25,8 +25,28 @@ class ViewController: UIViewController {
             selector: #selector(editDiaryNotification(_:)),
             name: NSNotification.Name("editDiary"),
             object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(starDiaryNotification(_:)),
+            name: NSNotification.Name("starDiary"),
+            object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(deleteDiaryNotification(_:)),
+            name: NSNotification.Name("deleteDiary"),
+            object: nil)
     }
     
+    /// 즐겨찾기와 DiaryDetailView 내용을 공유하기 위한 옵저버를 위한 Selector 함수
+    @objc func starDiaryNotification(_ notification: Notification) {
+        guard let starDiary = notification.object as? [String: Any] else { return }
+        guard let isStar = starDiary["isStar"] as? Bool else { return }
+        guard let indexPath = starDiary["indexPath"] as? IndexPath else { return }
+        self.diaryList[indexPath.row].isStar = isStar // 토글이 일어나면 starDiaryNotification이 호출되고
+
+    }
     
     @objc func editDiaryNotification(_ notification: Notification) {
         guard let diary = notification.object as? Diary else { return }
@@ -36,6 +56,13 @@ class ViewController: UIViewController {
             $0.date.compare($1.date) == .orderedDescending
         })
         self.collectionView.reloadData()
+    }
+    
+    /// delete notification center selector 메서드 정의
+    @objc func deleteDiaryNotification(_ notification: Notification) {
+        guard let indexPath = notification.object as? IndexPath else { return } // post로 전달한 IndexPath를 가져온다
+        self.diaryList.remove(at: indexPath.row) // 전달받은 indexPasth row값에 있는 배열의 요소를 삭제한다
+        self.collectionView.deleteItems(at: [indexPath]) // 전달받은 indexPath를 넘겨줘서 컬렉션 뷰에서 일기가 사라지도록 구현한다.
     }
     
     // step 2 : diaryList 배열에 저장된 일기를 CollectionView에 표시되도록 한다 -> collectionView 설정하는 메서드
@@ -180,7 +207,7 @@ extension ViewController: UICollectionViewDelegate {
         viewController.indexPath = indexPath
         
         // 삭제 step 6. delegate 프로퍼티에 접근해서 self 대입시켜준다
-        viewController.delegate = self
+        //viewController.delegate = self
         self.navigationController?.pushViewController(viewController, animated: true)
         // 일기장 상세화면이 푸쉬되게 한다
     }
@@ -202,15 +229,15 @@ extension ViewController: WriteDiaryViewDelegate {
 }
 
 // 삭제 step 7. didSelectDelete 메서드를 구현한다
-extension ViewController : DiaryDetailViewDelegate {
-    func didSelectDelete(indexPath: IndexPath) {
-        self.diaryList.remove(at: indexPath.row) // 전달받은 indexPasth row값에 있는 배열의 요소를 삭제한다
-        self.collectionView.deleteItems(at: [indexPath]) // 전달받은 indexPath를 넘겨줘서 컬렉션 뷰에서 일기가 사라지도록 구현한다.
-    }
+//extension ViewController : DiaryDetailViewDelegate {
+//    func didSelectDelete(indexPath: IndexPath) {
+//        self.diaryList.remove(at: indexPath.row) // 전달받은 indexPasth row값에 있는 배열의 요소를 삭제한다
+//        self.collectionView.deleteItems(at: [indexPath]) // 전달받은 indexPath를 넘겨줘서 컬렉션 뷰에서 일기가 사라지도록 구현한다.
+//    }
     
-    // 즐겨찾기 상태가 일기장 리스트에 나타나도록 구현하기 step 3 : 정의해둔 메서드 구현하기
-    func didSelectStar(indexPath: IndexPath, isStar: Bool) {
-        self.diaryList[indexPath.row].isStar = isStar
-    }
-}
+//    // 즐겨찾기 상태가 일기장 리스트에 나타나도록 구현하기 step 3 : 정의해둔 메서드 구현하기
+//    func didSelectStar(indexPath: IndexPath, isStar: Bool) {
+//        self.diaryList[indexPath.row].isStar = isStar
+//    }
+
 
