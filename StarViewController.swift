@@ -12,12 +12,13 @@ class StarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureCollectionView()
+        self.loadStarDiaryList()
     }
     
     /// 탭바에서 즐겨찾기만 모아보기 step 4 : StarViewController로 이동할 때마다 즐겨찾기 된 일기들을 불러온다
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.loadStarDiaryList()
+        
     }
     
     private func dateToString(date: Date) -> String {
@@ -54,7 +55,6 @@ class StarViewController: UIViewController {
         }).sorted(by: { // 그 중에서 날짜가 최신순으로 정렬되도록 한다
             $0.date.compare($1.date) == .orderedDescending
         })
-        self.collectionView.reloadData()
     }
 
 }
