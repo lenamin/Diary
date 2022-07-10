@@ -96,16 +96,16 @@ class StarViewController: UIViewController {
         guard let isStar = starDiary["isStar"] as? Bool else { return }
         guard let uuidString = starDiary["uuidString"] as? String else { return }
 
-        if !isStar {
-            guard let index = self.diaryList.firstIndex(where: { $0.uuidString == uuidString}) else { return }
-            self.diaryList.remove(at: index)
-            self.collectionView.deleteItems(at: [IndexPath(row: index, section: 0)])
-        } else {
+        if isStar {
             self.diaryList.append(diary)
             self.diaryList = self.diaryList.sorted(by: {
                 $0.date.compare($1.date) == .orderedDescending // 최신 순 정렬
             })
             self.collectionView.reloadData()
+        } else {
+            guard let index = self.diaryList.firstIndex(where: { $0.uuidString == uuidString}) else { return }
+            self.diaryList.remove(at: index)
+            self.collectionView.deleteItems(at: [IndexPath(row: index, section: 0)])
         }
     }
     
@@ -141,7 +141,7 @@ extension StarViewController: UICollectionViewDelegateFlowLayout {
 extension StarViewController: UICollectionViewDelegate {
     /// 즐겨찾기 탭에서 해당 일기를 누르면 해당 일기 화면으로 이동한다
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let viewController = self.storyboard?.instantiateViewController(withIdentifier: "DiaryDetailViewController") as? DiaryDetailViewController else { return }
+        guard let viewController = self.storyboard?.instantiateViewController(identifier: "DiaryDetailViewController") as? DiaryDetailViewController else { return }
         let diary = self.diaryList[indexPath.row]
         viewController.diary = diary
         viewController.indexPath = indexPath

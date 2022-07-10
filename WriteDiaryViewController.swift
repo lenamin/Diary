@@ -35,9 +35,9 @@ class WriteDiaryViewController: UIViewController {
         
         self.configureContentsTextView() // 아래에서 만든 configureContentsTextView() 함수를 호출한다
         self.configureDatePicker()
-        self.confirmButton.isEnabled = false // 제목, 내용, 날짜에 아무것도 작성 안된 경우인 경우니까 등록버튼을 비활성화되도록 만들어준다.
         self.configureInputField()
         self.configureEditMode()
+        self.confirmButton.isEnabled = false // 제목, 내용, 날짜에 아무것도 작성 안된 경우인 경우니까 등록버튼을 비활성화되도록 만들어준다.
     }
     
     // 일기 수정하기 step 5
@@ -111,7 +111,7 @@ class WriteDiaryViewController: UIViewController {
             self.delegate?.didSelectedRegister(diary: diary)
             
             // editorMode가 edit이라면 (.edit 에서 diary를 넘기면 수정 전 diary 객체가 전달된다)
-        case let .edit(_, diary):
+        case let .edit(indexPath, diary):
             let diary = Diary(
                 uuidString: diary.uuidString,
                 title: title,

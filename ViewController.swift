@@ -207,7 +207,7 @@ extension ViewController: UICollectionViewDelegate {
         //didSelectItemAt : 특정 셀이 선택되었음을 알려주는 메서드
         
         // DiaryDetailViewController가 Push 되도록 구현한다
-        guard let viewController = self.storyboard?.instantiateViewController(withIdentifier: "DiaryDetailViewController") as? DiaryDetailViewController else { return }
+        guard let viewController = self.storyboard?.instantiateViewController(identifier: "DiaryDetailViewController") as? DiaryDetailViewController else { return }
         
         let diary = self.diaryList[indexPath.row] //선택한 일기가 무엇인지 diary 상수에 대입한다
         

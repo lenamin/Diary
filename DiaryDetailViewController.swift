@@ -122,14 +122,6 @@ class DiaryDetailViewController: UIViewController {
         // writeDiaryViewController화면으로 푸쉬되도록 설정한다
     }
     
-    
-    // // 수정된 내용이 뷰에 반영되도록 step 2: 수정된 뷰 인스턴스가 deinit 될 때 옵저버를 삭제한다
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-        // 해당 인스턴스에 추가된 옵저버가 모두 제거되게 해준다
-    }
-    
-    
     // 삭제 step 5. 삭제 버튼을 누르면 수행될 동작들
     @IBAction func tapDeleteButton(_ sender: UIButton) {
         guard let uuidString = self.diary?.uuidString else { return }
@@ -166,13 +158,19 @@ class DiaryDetailViewController: UIViewController {
         // self.delegate?.didSelectStar(indexPath: indexPath, isStar: self.diary?.isStar ?? false) // 로직 리팩토링 위해 주석처리 함
         // 즐겨찾기 리팩토링 step 1 
         NotificationCenter.default.post(
-            name: NSNotification.Name("StarDiary"),
+            name: NSNotification.Name("starDiary"),
             object: [
                 "diary": self.diary, // 즐겨찾기 된 diary 객체를 notification에 전달
-                "isStar": self.diary?.isStar, //isStar 키에는 diary.isStar를 넘겨줘서 즐겨찾기 상태를
+                "isStar": self.diary?.isStar ?? false, //isStar 키에는 diary.isStar를 넘겨줘서 즐겨찾기 상태를
                 "uuidString": diary?.uuidString // indexPath 키에는 indexPath를 넘겨준다
                 ],
             userInfo: nil
         )
+    }
+    
+    // // 수정된 내용이 뷰에 반영되도록 step 2: 수정된 뷰 인스턴스가 deinit 될 때 옵저버를 삭제한다
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+        // 해당 인스턴스에 추가된 옵저버가 모두 제거되게 해준다
     }
 }
