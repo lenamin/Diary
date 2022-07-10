@@ -8,7 +8,7 @@ protocol DiaryDetailViewDelegate: AnyObject {
     func didSelectDelete(indexPath: IndexPath)
     
     // 즐겨찾기 상태가 일기장 리스트에 나타나도록 구현하기 step 1
-    func didSelectStar(indexPath: IndexPath, isStar: Bool)
+    //func didSelectStar(indexPath: IndexPath, isStar: Bool)
 }
 
 class DiaryDetailViewController: UIViewController {

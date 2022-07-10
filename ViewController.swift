@@ -25,6 +25,21 @@ class ViewController: UIViewController {
             selector: #selector(editDiaryNotification(_:)),
             name: NSNotification.Name("editDiary"),
             object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(starDiaryNotification(_:)),
+            name: NSNotification.Name("starDiary"),
+            object: nil)
+    }
+    
+    /// 즐겨찾기와 DiaryDetailView 내용을 공유하기 위한 옵저버를 위한 Selector 함수
+    @objc func starDiaryNotification(_ notification: Notification) {
+        guard let starDiary = notification.object as? [String: Any] else { return }
+        guard let isStar = starDiary["isStar"] as? Bool else { return }
+        guard let indexPath = starDiary["indexPath"] as? IndexPath else { return }
+        self.diaryList[indexPath.row].isStar = isStar // 토글이 일어나면 starDiaryNotification이 호출되고
+
     }
     
     @objc func editDiaryNotification(_ notification: Notification) {
@@ -207,9 +222,9 @@ extension ViewController : DiaryDetailViewDelegate {
         self.collectionView.deleteItems(at: [indexPath]) // 전달받은 indexPath를 넘겨줘서 컬렉션 뷰에서 일기가 사라지도록 구현한다.
     }
     
-    // 즐겨찾기 상태가 일기장 리스트에 나타나도록 구현하기 step 3 : 정의해둔 메서드 구현하기
-    func didSelectStar(indexPath: IndexPath, isStar: Bool) {
-        self.diaryList[indexPath.row].isStar = isStar
-    }
+//    // 즐겨찾기 상태가 일기장 리스트에 나타나도록 구현하기 step 3 : 정의해둔 메서드 구현하기
+//    func didSelectStar(indexPath: IndexPath, isStar: Bool) {
+//        self.diaryList[indexPath.row].isStar = isStar
+//    }
 }
 
