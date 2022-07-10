@@ -97,18 +97,18 @@ class WriteDiaryViewController: UIViewController {
         guard let contents = self.contentsTextView.text else {return} // 작성한 내용을 가져오고
         guard let date = self.diaryDate else {return} // date picker에서 선택된 날짜를 가져온다
         
-        let diary = Diary(title: title, contents: contents, date: date, isStar: false)
-        // diary 객체 생성 (제목, 내용, 날짜 각각 넘겨주고, 즐겨찾기는 우선 false로 넘겨준다)
-        print("confirm 눌렀을 때 diary: \(diary)")
-        
         // 수정 notification center step 1 :
         switch self.diaryEditorMode {
         case .new:
+            let diary = Diary(title: title, contents: contents, date: date, isStar: false)
+            // diary 객체 생성 (제목, 내용, 날짜 각각 넘겨주고, 즐겨찾기는 우선 false로 넘겨준다)
             // 일기 등록하는 행위
             self.delegate?.didSelectedRegister(diary: diary)
             
             // editorMode가 edit이라면 (.edit 에서 diary를 넘기면 수정 전 diary 객체가 전달된다)
-        case let .edit(indexPath, _):
+        case let .edit(indexPath, diary):
+            let diary = Diary(title: title, contents: contents, date: date, isStar: diary.isStar)
+
             NotificationCenter.default.post(
                 name: NSNotification.Name("editDiary"),
                 // post 메서드를 호출한다
@@ -120,12 +120,6 @@ class WriteDiaryViewController: UIViewController {
                 // 수정이 일어나면 컬렉션뷰에도 수정이 일어나야 하므로 해당 키 값에 value가 변하도록
             )
         }
-        
-        
-        
-        self.delegate?.didSelectedRegister(diary: diary)
-        // didSelectedRegister에 diary 객체를 넘겨준다
-        
         self.navigationController?.popViewController(animated: true)
         // 화면이 이전 화면으로 이동되게 한다. (일기장 화면으로)
     } // 전달될 준비 마침! 이제 View controller 로 가자 
