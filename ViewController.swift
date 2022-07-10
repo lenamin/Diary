@@ -43,15 +43,19 @@ class ViewController: UIViewController {
     @objc func starDiaryNotification(_ notification: Notification) {
         guard let starDiary = notification.object as? [String: Any] else { return }
         guard let isStar = starDiary["isStar"] as? Bool else { return }
-        guard let indexPath = starDiary["indexPath"] as? IndexPath else { return }
-        self.diaryList[indexPath.row].isStar = isStar // 토글이 일어나면 starDiaryNotification이 호출되고
+        guard let uuidString = starDiary["uuidString"] as? String else { return }
+        guard let index = self.diaryList.firstIndex(where: { $0.uuidString == uuidString }) else { return }
+        self.diaryList[index].isStar = isStar // 토글이 일어나면 starDiaryNotification이 호출되고
 
     }
     
     @objc func editDiaryNotification(_ notification: Notification) {
         guard let diary = notification.object as? Diary else { return }
-        guard let row = notification.userInfo?["indexPath.row"] as? Int else { return }
-        self.diaryList[row] = diary
+        guard let index = self.diaryList.firstIndex(where: { $0.uuidString == diary.uuidString }) else { return }
+        // 배열을 iteration해서 notification을 통해 전달받은 uuid 값과 같은 값이 있는지 확인하고
+        // 있으면 해당 요소의 index를 return 받을 수 있도록
+        
+        self.diaryList[index] = diary
         self.diaryList = self.diaryList.sorted(by: {
             $0.date.compare($1.date) == .orderedDescending
         })
@@ -60,9 +64,11 @@ class ViewController: UIViewController {
     
     /// delete notification center selector 메서드 정의
     @objc func deleteDiaryNotification(_ notification: Notification) {
-        guard let indexPath = notification.object as? IndexPath else { return } // post로 전달한 IndexPath를 가져온다
-        self.diaryList.remove(at: indexPath.row) // 전달받은 indexPasth row값에 있는 배열의 요소를 삭제한다
-        self.collectionView.deleteItems(at: [indexPath]) // 전달받은 indexPath를 넘겨줘서 컬렉션 뷰에서 일기가 사라지도록 구현한다.
+        guard let uuidString = notification.object as? String else { return }
+        guard let index = self.diaryList.firstIndex(where: { $0.uuidString == uuidString}) else { return }
+        self.diaryList.remove(at: index) // 전달받은 indexPasth row값에 있는 배열의 요소를 삭제한다
+        self.collectionView.deleteItems(at: [IndexPath(row: index, section: 0)])
+        // 전달받은 indexPath를 넘겨줘서 컬렉션 뷰에서 일기가 사라지도록 구현한다.
     }
     
     // step 2 : diaryList 배열에 저장된 일기를 CollectionView에 표시되도록 한다 -> collectionView 설정하는 메서드

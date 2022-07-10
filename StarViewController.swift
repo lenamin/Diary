@@ -55,7 +55,6 @@ class StarViewController: UIViewController {
         self.collectionView.dataSource = self
     }
     
-    
     /// 탭바에서 즐겨찾기만 모아보기 step 3 : 즐겨찾기 일기들을 가져오기
     private func loadStarDiaryList() {
         let userDefaults = UserDefaults.standard // userDefaults에 접근
@@ -83,8 +82,8 @@ class StarViewController: UIViewController {
     
     @objc func editDiaryNotification(_ notification: Notification) {
         guard let diary = notification.object as? Diary else { return }
-        guard let row = notification.userInfo?["IndexPath.row"] as? Int else { return }
-        self.diaryList[row] = diary // 수정된 내용 대입
+        guard let index = self.diaryList.firstIndex(where: { $0.uuidString == diary.uuidString}) else { return }
+        self.diaryList[index] = diary // 수정된 내용 대입
         self.diaryList = self.diaryList.sorted(by: {
             $0.date.compare($1.date) == .orderedDescending // 최신 순 정렬
         })
@@ -95,10 +94,12 @@ class StarViewController: UIViewController {
         guard let starDiary = notification.object as? [String: Any] else { return }
         guard let diary = starDiary["diary"] as? Diary else { return }
         guard let isStar = starDiary["isStar"] as? Bool else { return }
-        guard let indexPath = starDiary["index{ath"] as? IndexPath else { return }
+        guard let uuidString = starDiary["uuidString"] as? String else { return }
+
         if !isStar {
-            self.diaryList.remove(at: indexPath.row)
-            self.collectionView.deleteItems(at: [indexPath])
+            guard let index = self.diaryList.firstIndex(where: { $0.uuidString == uuidString}) else { return }
+            self.diaryList.remove(at: index)
+            self.collectionView.deleteItems(at: [IndexPath(row: index, section: 0)])
         } else {
             self.diaryList.append(diary)
             self.diaryList = self.diaryList.sorted(by: {
@@ -109,9 +110,10 @@ class StarViewController: UIViewController {
     }
     
     @objc func deleteDiaryNotification(_ notification: Notification) {
-        guard let indexPath = notification.object as? IndexPath else { return }
-        self.diaryList.remove(at: indexPath.row)
-        self.collectionView.deleteItems(at: [indexPath])
+        guard let uuidString = notification.object as? String else { return }
+        guard let index = self.diaryList.firstIndex(where: { $0.uuidString == uuidString}) else { return }
+        self.diaryList.remove(at: index)
+        self.collectionView.deleteItems(at: [IndexPath(row: index, section: 0)])
     }
 }
 
