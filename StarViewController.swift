@@ -87,11 +87,18 @@ class StarViewController: UIViewController {
     
     @objc func starDiaryNotification(_ notification: Notification) {
         guard let starDiary = notification.object as? [String: Any] else { return }
+        guard let diary = starDiary["diary"] as? Diary else { return }
         guard let isStar = starDiary["isStar"] as? Bool else { return }
         guard let indexPath = starDiary["index{ath"] as? IndexPath else { return }
         if !isStar {
             self.diaryList.remove(at: indexPath.row)
             self.collectionView.deleteItems(at: [indexPath])
+        } else {
+            self.diaryList.append(diary)
+            self.diaryList = self.diaryList.sorted(by: {
+                $0.date.compare($1.date) == .orderedDescending // 최신 순 정렬
+            })
+            self.collectionView.reloadData()
         }
     }
     
@@ -100,7 +107,6 @@ class StarViewController: UIViewController {
         self.diaryList.remove(at: indexPath.row)
         self.collectionView.deleteItems(at: [indexPath])
     }
-
 }
 
 // 컬렉션뷰에 즐겨찾기 내용 나타내기 step 2 : 필수 메서드 구현하기

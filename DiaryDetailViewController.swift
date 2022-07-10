@@ -151,6 +151,7 @@ class DiaryDetailViewController: UIViewController {
         NotificationCenter.default.post(
             name: NSNotification.Name("StarDiary"),
             object: [
+                "diary": self.diary,// 즐겨찾기 된 diary 객체를 notification에 전달
                 "isStar": self.diary?.isStar ?? false, //isStar 키에는 diary.isStar를 넘겨줘서 즐겨찾기 상태를
                 "indexPath": indexPath // indexPath 키에는 indexPath를 넘겨준다
                 ],
