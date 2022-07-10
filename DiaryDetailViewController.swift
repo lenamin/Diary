@@ -2,14 +2,14 @@
 
 import UIKit
 
-// 삭제 step 3. 일기를 삭제하기 위한 delegate
-protocol DiaryDetailViewDelegate: AnyObject {
-    
-    func didSelectDelete(indexPath: IndexPath)
-    
-    // 즐겨찾기 상태가 일기장 리스트에 나타나도록 구현하기 step 1
-    //func didSelectStar(indexPath: IndexPath, isStar: Bool)
-}
+//// 삭제 step 3. 일기를 삭제하기 위한 delegate
+//protocol DiaryDetailViewDelegate: AnyObject {
+//
+//    func didSelectDelete(indexPath: IndexPath)
+//
+//    // 즐겨찾기 상태가 일기장 리스트에 나타나도록 구현하기 step 1
+//    //func didSelectStar(indexPath: IndexPath, isStar: Bool)
+//}
 
 class DiaryDetailViewController: UIViewController {
 
@@ -20,7 +20,7 @@ class DiaryDetailViewController: UIViewController {
     var starButton: UIBarButtonItem?
     
     // 삭제 step 4. 프로퍼티 선언
-    weak var delegate: DiaryDetailViewDelegate? // protocol DiaryDetailViewDelegate의 프로퍼티
+    // weak var delegate: DiaryDetailViewDelegate? // protocol DiaryDetailViewDelegate의 프로퍼티
     
     
     // 삭제 step 1. 일기장에서 전달받을 프로퍼티를 선언한다
@@ -119,12 +119,17 @@ class DiaryDetailViewController: UIViewController {
     @IBAction func tapDeleteButton(_ sender: UIButton) {
         guard let indexPath = self.indexPath else { return }
         
-        self.delegate?.didSelectDelete(indexPath: indexPath)
+        // self.delegate?.didSelectDelete(indexPath: indexPath)
         // delegate에서 정의한 didSelectDelete 메서드를 호출해서 메서드 파라미터에 indexPath를 전달해준다
+        
+
         
         self.navigationController?.popViewController(animated: true)
         // 삭제 버튼이 눌러졌을 때 삭제한 이후에는 전 화면으로 이동하도록 한다
     }
+    
+
+    
     // 즐겨찾기 step 3 selector에 넣기 위한 메서드 정의
     @objc func tapStarButton() {
         guard let isStar = self.diary?.isStar else { return }
