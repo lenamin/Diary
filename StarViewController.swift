@@ -2,7 +2,7 @@
 
 import UIKit
 
-class StarViewController: UIViewController, UICollectionViewDelegate {
+class StarViewController: UIViewController {
     // 탭바에서 즐겨찾기만 모아보기 step 1 : outlet 변수 정의하기
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -77,5 +77,16 @@ extension StarViewController: UICollectionViewDataSource {
 extension StarViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: UIScreen.main.bounds.width - 20, height: 80)
+    }
+}
+
+extension StarViewController: UICollectionViewDelegate {
+    /// 즐겨찾기 탭에서 해당 일기를 누르면 해당 일기 화면으로 이동한다
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let viewController = self.storyboard?.instantiateViewController(withIdentifier: "DiaryDetailViewController") as? DiaryDetailViewController else { return }
+        let diary = self.diaryList[indexPath.row]
+        viewController.diary = diary
+        viewController.indexPath = indexPath
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 }
