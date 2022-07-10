@@ -4,6 +4,7 @@ import UIKit
 
 // 삭제 step 3. 일기를 삭제하기 위한 delegate
 protocol DiaryDetailViewDelegate: AnyObject {
+    
     func didSelectDelete(indexPath: IndexPath)
     
     // 즐겨찾기 상태가 일기장 리스트에 나타나도록 구현하기 step 1
@@ -140,6 +141,15 @@ class DiaryDetailViewController: UIViewController {
         self.diary?.isStar = !isStar // true이면 false가 되게, false이면 true가 되게
         
         // 즐겨찾기 상태가 일기장 리스트에 나타나도록 구현하기 step 2 : 즐겨찾기 상태 전달하기 
-        self.delegate?.didSelectStar(indexPath: indexPath, isStar: self.diary?.isStar ?? false)
+        // self.delegate?.didSelectStar(indexPath: indexPath, isStar: self.diary?.isStar ?? false) // 로직 리팩토링 위해 주석처리 함
+        // 즐겨찾기 리팩토링 step 1 
+        NotificationCenter.default.post(
+            name: NSNotification.Name("StarDiary"),
+            object: [
+                "isStar": self.diary?.isStar ?? false, //isStar 키에는 diary.isStar를 넘겨줘서 즐겨찾기 상태를
+                "indexPath": indexPath // indexPath 키에는 indexPath를 넘겨준다
+                ],
+            userInfo: nil
+        )
     }
 }
