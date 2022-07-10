@@ -90,6 +90,7 @@ class ViewController: UIViewController {
     private func saveDiaryList() {
         let date = self.diaryList.map { // 배열에 있는 요소들을 딕셔너리 형태로 매핑 시켜준다
             [
+                "uuidString": $0.uuidString,
                 "title": $0.title, // 딕셔너리 title 키에 다이어리의 title이 저장되도록 한다.
                 "contents": $0.contents,
                 "date": $0.date,
@@ -114,6 +115,7 @@ class ViewController: UIViewController {
         
         // 불러온 데이터를 diaryList에 넣어준다 (diary 타입이 되게 매핑 시켜준다)
         self.diaryList = data.compactMap {
+            guard let uuidString = $0["uuidString"] as? String else { return nil }
             guard let title = $0["title"] as? String else { return nil }
             // 축약인자로 딕셔너리에 접근하고 title 키로 딕셔너리 value를 가져온다
             // 딕셔너리 밸류가 any 타입이므로 string으로 타입 변환 해준 것
@@ -123,7 +125,7 @@ class ViewController: UIViewController {
             guard let date = $0["date"] as? Date else { return nil }
             guard let isStar = $0["isStar"] as? Bool else { return nil }
             
-            return Diary(title: title, contents: contents, date: date, isStar: isStar)
+            return Diary(uuidString: uuidString, title: title, contents: contents, date: date, isStar: isStar)
             // Diary 타입이 되게 인스턴스화 한다
             // 그리고 이 loadDiaryList() 메서드 자체를 viewDidLoad()에서 호출한다
         }

@@ -62,11 +62,17 @@ class StarViewController: UIViewController {
         guard let data = userDefaults.object(forKey: "diaryList") as? [[String : Any]] else { return } // guard 문으로 옵셔널 바인딩
         // object 메서드는 Any 타입으로 리턴되므로 dictionary 배열로 타입캐스팅 해줘야 함
         self.diaryList = data.compactMap {
+            guard let uuidString = $0["uuidString"] as? String else { return nil }
             guard let title = $0["title"] as? String else { return nil }
             guard let contents = $0["contents"] as? String else { return nil }
             guard let date = $0["date"] as? Date else { return nil }
             guard let isStar = $0["isStar"] as? Bool else { return nil }
-            return Diary(title: title, contents: contents, date: date, isStar: isStar)
+            return Diary(
+                uuidString: uuidString,
+                title: title,
+                contents: contents,
+                date: date,
+                isStar: isStar)
             // Diary 타입이 되도록 인스턴스화를 해준다
         }.filter({ // 불러온 diaryList를 filter 함수에 넣어서 isStar가 true인 일기만 필터링한다
             $0.isStar == true

@@ -126,7 +126,7 @@ class WriteDiaryViewController: UIViewController {
                 // 이 이름으로 옵저버에서 설정한 이름의 노티피케이션 이벤트가 발생했는지 관찰
                 object: diary,
                 // notification center를 통해 전달할 객체
-                userInfo: ["indexPath.row": indexPath.row]
+                userInfo: nil
                 // 수정이 일어나면 컬렉션뷰에도 수정이 일어나야 하므로 해당 키 값에 value가 변하도록
             )
         }
