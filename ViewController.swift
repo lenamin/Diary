@@ -27,7 +27,6 @@ class ViewController: UIViewController {
             object: nil)
     }
     
-    
     @objc func editDiaryNotification(_ notification: Notification) {
         guard let diary = notification.object as? Diary else { return }
         guard let row = notification.userInfo?["indexPath.row"] as? Int else { return }

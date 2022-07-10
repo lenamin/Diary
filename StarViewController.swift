@@ -14,7 +14,7 @@ class StarViewController: UIViewController, UICollectionViewDelegate {
         self.configureCollectionView()
     }
     
-    // 탭바에서 즐겨찾기만 모아보기 step 4 : StarViewController로 이동할 때마다 즐겨찾기 된 일기들을 불러온다
+    /// 탭바에서 즐겨찾기만 모아보기 step 4 : StarViewController로 이동할 때마다 즐겨찾기 된 일기들을 불러온다
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.loadStarDiaryList()
@@ -27,7 +27,7 @@ class StarViewController: UIViewController, UICollectionViewDelegate {
         return formatter.string(from: date)
     }
     
-    // 컬렉션뷰에 즐겨찾기 내용 나타내기 step 1
+    /// 컬렉션뷰에 즐겨찾기 내용 나타내기 step 1
     private func configureCollectionView() {
         // collectionView를 코드로 UI를 구성하기 위해, UICollectionViewFlowLayout 인스턴스를 대입시켜 준다
         self.collectionView.collectionViewLayout = UICollectionViewFlowLayout()
@@ -37,7 +37,7 @@ class StarViewController: UIViewController, UICollectionViewDelegate {
     }
     
     
-    // 탭바에서 즐겨찾기만 모아보기 step 3 : 즐겨찾기 일기들을 가져오기
+    /// 탭바에서 즐겨찾기만 모아보기 step 3 : 즐겨찾기 일기들을 가져오기
     private func loadStarDiaryList() {
         let userDefaults = UserDefaults.standard // userDefaults에 접근
         guard let data = userDefaults.object(forKey: "diaryList") as? [[String : Any]] else { return } // guard 문으로 옵셔널 바인딩
