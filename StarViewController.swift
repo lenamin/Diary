@@ -13,6 +13,24 @@ class StarViewController: UIViewController {
         super.viewDidLoad()
         self.configureCollectionView()
         self.loadStarDiaryList()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(editDiaryNotification(_:)),
+            name: NSNotification.Name("editDiary"),
+            object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(starDiaryNotification(_:)),
+            name: NSNotification.Name("starDiary"),
+            object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(deleteDiaryNotification(_:)),
+            name: NSNotification.Name("deleteDiary"),
+            object: nil)
     }
     
     /// 탭바에서 즐겨찾기만 모아보기 step 4 : StarViewController로 이동할 때마다 즐겨찾기 된 일기들을 불러온다
